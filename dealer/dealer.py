@@ -48,10 +48,18 @@ class Dealer:
         sql = SqlRaw.paths(["api/routes/dealer/model"])
         sql.load("dealer_post.sql").connect(settings.conn)
 
-        ll = sql.fetchone({"id": id, "dealer_name": dealer_name, "dealer_code": dealer_code,
-                           "neighborhood_id": neighborhood_id, "district_id": district_id, "city_id": city_id,
-                           "working_hours": working_hours, "is_active": is_active, "qrcode": qrcode, "info": info,
-                           "image": image, "payment_info": payment_info, "table_is_active": table_is_active,
-                           "reservation_is_active": reservation_is_active,
-                           "marketplaces_is_active": marketplaces_is_active})
-        print(ll)
+#         ll = sql.fetchone({"id": id, "dealer_name": dealer_name, "dealer_code": dealer_code,
+#                            "neighborhood_id": neighborhood_id, "district_id": district_id, "city_id": city_id,
+#                            "working_hours": working_hours, "is_active": is_active, "qrcode": qrcode, "info": info,
+#                            "image": image, "payment_info": payment_info, "table_is_active": table_is_active,
+#                            "reservation_is_active": reservation_is_active,
+#                            "marketplaces_is_active": marketplaces_is_active})
+#         print(ll)
+    @router.put("/dealer/{dealer_id}", status_code=status.HTTP_200_OK, tags=["update_dealer"])
+    def update_dealer(self, dealer_id: int, dealer_code: str = Body(..., embed=True)):
+
+        sql = SqlRaw.paths(["./api/routes/dealer/model"])
+        sql.load("dealer_update.sql").connect(Config.conn)
+        a = sql.fetchall({"dealer_id": dealer_id, "dealer_code": dealer_code})
+        return "success"
+
